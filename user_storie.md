@@ -49,28 +49,41 @@ Acceptance Criteria:
 [x] I can select the correct item from the list with my mouse or keyboard to add it to the cart.
 
 Story 5: Completing a Transaction
-[ ] As a Store Seller,
-[ ] I want to finalize a sale with a single button,
-[ ] so that my inventory is automatically updated and the customer gets a receipt.
+[x] As a Store Seller,
+[x] I want to finalize a sale with a single button,
+[x] so that my inventory is automatically updated and the customer gets a receipt.
 
 Acceptance Criteria:
 
-[ ] The cart must clearly show a final total.
-[ ] When I click "Complete Sale":
-[ ] The stock count for each sold item must decrease in the database.
-[ ] A record of the sale must be saved permanently.
-[ ] A receipt must be automatically printed on my thermal receipt printer.
+[x] The cart must clearly show a final total.
+[x] When I click "Complete Sale":
+[x] The stock count for each sold item must decrease in the database.
+[x] A record of the sale must be saved permanently.
+[x] A receipt must be automatically printed on my thermal receipt printer.
 
 Story 6: Protecting Business Data
-[ ] As a Store Owner,
-[ ] I want to press a button to back up all my data to a USB flash drive,
-[ ] so that my business is protected if the computer fails.
+[x] As a Store Owner,
+[x] I want to press a button to back up all my data to a USB flash drive,
+[x] so that my business is protected if the computer fails.
 
 Acceptance Criteria:
 
-[ ] There must be an easy-to-find "Backup" button.
-[ ] This function should save a single, dated backup file of the database.
-[ ] There should also be a "Restore" function to load data from a backup file, with a clear warning that it will overwrite existing data.
+[x] There must be an easy-to-find "Backup" button.
+[x] This function should save a single, dated backup file of the database.
+[x] There should also be a "Restore" function to load data from a backup file, with a clear warning that it will overwrite existing data.
+
+Story 7: Sales History and Summary
+[x] As a Store Owner,
+[x] I want to view a summary of all sales transactions,
+[x] so that I can track business performance and review past sales.
+
+Acceptance Criteria:
+
+[x] There must be a "Sales History" page showing all completed sales.
+[x] Each sale should show the date, total amount, and number of items.
+[x] I should be able to click on any sale to see its detailed breakdown.
+[x] The page should show summary statistics (total sales count, total revenue).
+[x] Receipt printing should be optional (checkbox in POS screen).
 
 Technical Implementation Checklist for the Developer
 This is a high-level guide to building the application based on the user stories.
@@ -102,16 +115,24 @@ Phase 2: Point of Sale Interface (Story 3 & 4)
 
 Phase 3: Finalizing the Sale (Story 5)
 
-[ ] Create the "Complete Sale" transaction function. This function must be atomic (all or nothing) and should:
-[ ] Create the sales record.
-[ ] Create the sale_items records.
-[ ] Update the stockOnHand in the products table.
-[ ] Implement the HTML receipt generation.
-[ ] Use Electron's contents.print() API for silent receipt printing.
+[x] Create the "Complete Sale" transaction function. This function must be atomic (all or nothing) and should:
+[x] Create the sales record.
+[x] Create the sale_items records.
+[x] Update the stockOnHand in the products table.
+[x] Implement the HTML receipt generation.
+[x] Use Electron's contents.print() API for silent receipt printing.
 
 Phase 4: Data Safety & Final Polish (Story 6)
 
-[ ] Build the UI for the Settings/Backup screen.
-[ ] Implement the file-copy logic for the "Backup" function.
-[ ] Implement the file replacement logic for the "Restore" function, including a confirmation dialog.
-[ ] Thoroughly test all workflows and package the application for deployment.
+[x] Build the UI for the Settings/Backup screen.
+[x] Implement the file-copy logic for the "Backup" function.
+[x] Implement the file replacement logic for the "Restore" function, including a confirmation dialog.
+[x] Thoroughly test all workflows and package the application for deployment.
+
+Phase 5: Sales History & Enhanced Features (Story 7)
+
+[x] Build the UI for the Sales History screen.
+[x] Implement database queries for sales summary and details.
+[x] Add optional receipt printing checkbox to POS screen.
+[x] Add sales statistics and detailed breakdown views.
+[x] Test all new features and ensure data integrity.

@@ -9,14 +9,20 @@
     "build": "vite build",
     "postbuild": "electron-builder",
     "pack": "electron-builder --dir",
-    "dist": "electron-builder",
+    "dist": "npm run build && electron-builder",
     "lint": "eslint .",
     "preview": "vite preview"
   },
   "main": "main.js",
   "build": {
     "appId": "com.puenkaset.pos",
-    "productName": "Puenkaset POS",
+    "mac": {
+      "target": "dmg"
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "productName": "Puenkaset",
     "files": [
       "dist/**/*",
       "main.js",
@@ -26,9 +32,6 @@
     ],
     "directories": {
       "buildResources": "public"
-    },
-    "win": {
-      "target": "nsis"
     }
   },
   "dependencies": {
