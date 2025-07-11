@@ -1,8 +1,9 @@
 {
   "name": "puenkaset",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
+  "author": "Jab Panupong",
   "scripts": {
     "dev": "concurrently \"cross-env NODE_ENV=development vite\" \"wait-on http://localhost:5173 && cross-env NODE_ENV=development electron .\"",
     "electron": "cross-env NODE_ENV=development electron .",
@@ -11,7 +12,8 @@
     "pack": "electron-builder --dir",
     "dist": "npm run build && electron-builder",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "rebuild": "electron-rebuild"
   },
   "main": "main.js",
   "build": {
@@ -22,17 +24,25 @@
     "win": {
       "target": "nsis"
     },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
     "productName": "Puenkaset",
     "files": [
       "dist/**/*",
       "main.js",
       "preload.js",
       "db.js",
-      "store.db"
+      "store.db",
+      "src/main/handlers/**/*"
     ],
     "directories": {
       "buildResources": "public"
-    }
+    },
+    "asarUnpack": [
+      "store.db"
+    ]
   },
   "dependencies": {
     "jsbarcode": "^3.12.1",
@@ -46,10 +56,9 @@
     "@types/react-dom": "^19.1.6",
     "@vitejs/plugin-react": "^4.5.2",
     "concurrently": "^9.2.0",
-    "electron": "latest",
+    "electron": "^37.2.1",
     "electron-builder": "latest",
     "cross-env": "latest",
-    "sqlite3": "latest",
     "eslint": "^9.29.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",

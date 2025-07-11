@@ -1,11 +1,14 @@
 import sqlite3 from 'sqlite3';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { app } from 'electron';
+import process from 'process';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const dbPath = path.join(__dirname, 'store.db');
+const isDev = !app || !app.isPackaged;
+const dbPath = isDev ? path.join(__dirname, 'store.db') : path.join(process.resourcesPath, 'store.db');
 const db = new sqlite3.Database(dbPath);
 
 // Create tables if they don't exist

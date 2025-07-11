@@ -29,7 +29,9 @@ function POS() {
     setCart((prev) => prev.filter(item => item.id !== id));
   };
 
-  const handleCompleteSale = (saleData) => {
+  const handleCompleteSale = async (saleData) => {
+    console.log('handleCompleteSale');
+    await window.api.printReceipt(saleData, cart);
     setCart([]);
   };
 
