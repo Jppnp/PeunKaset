@@ -9,6 +9,7 @@ function ProductSearch({ onAddToCart }) {
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
   const debounceRef = useRef();
   const inputRef = useRef();
+  const itemRefs = useRef([]);
 
   useEffect(() => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
@@ -29,6 +30,12 @@ function ProductSearch({ onAddToCart }) {
     }, 300);
     return () => clearTimeout(debounceRef.current);
   }, [query]);
+
+  useEffect(() => {
+    if (highlightedIndex >= 0 && itemRefs.current[highlightedIndex]) {
+      itemRefs.current[highlightedIndex].scrollIntoView({ block: 'nearest' });
+    }
+  }, [highlightedIndex]);
 
   const handleAddToCart = (product) => {
     onAddToCart({ ...product, price: product.sale_price });
@@ -87,6 +94,7 @@ function ProductSearch({ onAddToCart }) {
           {results.map((product, idx) => (
             <li
               key={product.id}
+              ref={el => itemRefs.current[idx] = el}
               style={{
                 padding: 8,
                 cursor: 'pointer',
@@ -98,7 +106,12 @@ function ProductSearch({ onAddToCart }) {
             >
               <div><b>{product.name}</b></div>
               <div style={{ fontSize: 13, color: '#666' }}>{product.description}</div>
-              <div style={{ fontSize: 14, color: '#333' }}>ราคาขาย: {formatCurrency(product.sale_price)} บาท | คงเหลือ: {product.stockOnHand}</div>
+              <div style={{ fontSize: 15, color: '#333' }}>
+                ราคาขาย: <span style={{ color: '#d32f2f', fontWeight: 'bold', fontSize: 18 }}>{formatCurrency(product.sale_price)}</span> บาท
+                <span style={{ fontSize: 13, color: '#333', fontWeight: 'normal', marginLeft: 8 }}>
+                  | คงเหลือ: {product.stockOnHand}
+                </span>
+              </div>
             </li>
           ))}
         </ul>

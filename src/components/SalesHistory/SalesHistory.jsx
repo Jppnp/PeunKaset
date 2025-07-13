@@ -106,7 +106,7 @@ function SalesHistory() {
   };
 
   // Use confirm modal for delete sale item
-  const handleDeleteSaleItem = (saleItemId) => {
+  const handleDeleteSaleItem = (saleItemId, saleId) => {
     setConfirm({
       open: true,
       message: 'คุณแน่ใจหรือไม่ว่าต้องการลบสินค้านี้ออกจากรายการขาย?',
@@ -114,11 +114,9 @@ function SalesHistory() {
         setConfirm({ ...confirm, open: false });
         try {
           await window.api.deleteSaleItem(saleItemId);
-          if (selectedSale) loadSaleDetails(selectedSale);
+          if (saleId) loadSaleDetails(saleId);
           loadSalesHistory();
           showNotification('ลบสินค้าสำเร็จ');
-          setSaleDetails([]);
-          setSelectedSale(null);
         } catch (error) {
           showNotification('เกิดข้อผิดพลาดในการลบสินค้า: ' + error.message);
         }
@@ -179,7 +177,7 @@ function SalesHistory() {
         />
         <SaleDetails
           saleDetails={saleDetails}
-          selectedSale={selectedSale}
+          saleId={selectedSale}
           onDeleteSaleItem={handleDeleteSaleItem}
         />
       </div>

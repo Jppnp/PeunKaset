@@ -1,8 +1,8 @@
 import React from 'react';
 import { formatCurrency } from '../common/Button';
 
-function SaleDetails({ saleDetails, selectedSale, onDeleteSaleItem }) {
-  if (!selectedSale) {
+function SaleDetails({ saleDetails, saleId, onDeleteSaleItem }) {
+  if (!saleId) {
     return null;
   }
   if (saleDetails.length === 0) {
@@ -17,7 +17,7 @@ function SaleDetails({ saleDetails, selectedSale, onDeleteSaleItem }) {
 
   return (
     <div style={{ flex: 1 }}>
-      <h3>รายละเอียด Sale #{selectedSale}</h3>
+      <h3>รายละเอียด Sale #{saleId}</h3>
       {saleDetails[0]?.remark && (
         <div style={{ marginBottom: 8, color: '#444', fontStyle: 'italic' }}>
           หมายเหตุ: {saleDetails[0].remark}
@@ -42,7 +42,7 @@ function SaleDetails({ saleDetails, selectedSale, onDeleteSaleItem }) {
               <td>{formatCurrency(item.item_total)}</td>
               <td>
                 <button
-                  onClick={() => onDeleteSaleItem(item.id)}
+                  onClick={() => onDeleteSaleItem(item.id, saleId)}
                   style={{ color: 'white', background: '#f44336', border: 'none', borderRadius: 4, padding: '4px 8px', cursor: 'pointer', fontSize: 12 }}
                 >
                   ลบ

@@ -106,7 +106,7 @@ export function setupSalesHandlers() {
     return new Promise((resolve, reject) => {
       db.all(`
         SELECT 
-          s.id,
+          si.id,
           s.date,
           s.remark,
           p.name as product_name,
