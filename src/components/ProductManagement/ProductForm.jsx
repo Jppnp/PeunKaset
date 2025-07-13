@@ -24,10 +24,21 @@ function ProductForm({ form, onFormChange, onSubmit, isEditing }) {
         style={{ marginRight: '8px', padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }}
       />
       <input
-        name="price"
+        name="cost_price"
         type="number"
-        placeholder="ราคา"
-        value={form.price}
+        placeholder="ราคาทุน (Cost Price)"
+        value={form.cost_price}
+        onChange={handleChange}
+        required
+        min="0"
+        step="0.01"
+        style={{ marginRight: '8px', padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }}
+      />
+      <input
+        name="sale_price"
+        type="number"
+        placeholder="ราคาขาย (Sale Price)"
+        value={form.sale_price}
         onChange={handleChange}
         required
         min="0"

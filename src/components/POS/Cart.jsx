@@ -2,28 +2,8 @@ import React from 'react';
 import Button from '../common/Button';
 import { formatCurrency } from '../common/Button';
 
-function Cart({ cart, onQtyChange, onRemove, onCompleteSale, onPreviewReceipt, printReceipt, setPrintReceipt }) {
-  const cartTotal = cart.reduce((sum, item) => sum + item.qty * item.price, 0);
-
-  const handleCompleteSale = async () => {
-    if (cart.length === 0) {
-      alert('ไม่มีสินค้าในตะกร้า');
-      return;
-    }
-
-    if (window.confirm(`ยืนยันการขายสินค้า\nยอดรวม: ${formatCurrency(cartTotal)} บาท`)) {
-      try {
-        const saleData = await window.api.completeSale(cart);
-        if (printReceipt) {
-          await window.api.printReceipt(saleData, cart);
-        }
-        onCompleteSale(saleData);
-        alert(`ขายสินค้าสำเร็จ!\nSale #${saleData.saleId}\nยอดรวม: ${formatCurrency(saleData.totalAmount)} บาท`);
-      } catch (error) {
-        alert('เกิดข้อผิดพลาดในการขายสินค้า: ' + error.message);
-      }
-    }
-  };
+function Cart({ cart, onQtyChange, onRemove, onRequestCompleteSale, onPreviewReceipt, printReceipt, setPrintReceipt }) {
+  const cartTotal = cart.reduce((sum, item) => sum + item.qty * (item.sale_price ?? item.price), 0);
 
   return (
     <div>
@@ -42,7 +22,7 @@ function Cart({ cart, onQtyChange, onRemove, onCompleteSale, onPreviewReceipt, p
           {cart.map((item) => (
             <tr key={item.id}>
               <td>{item.name}</td>
-              <td>{formatCurrency(item.price)}</td>
+              <td>{formatCurrency(item.sale_price ?? item.price)}</td>
               <td>
                 <Button 
                   onClick={() => onQtyChange(item.id, -1)}
@@ -60,7 +40,7 @@ function Cart({ cart, onQtyChange, onRemove, onCompleteSale, onPreviewReceipt, p
                   +
                 </Button>
               </td>
-              <td>{formatCurrency(item.qty * item.price)}</td>
+              <td>{formatCurrency(item.qty * (item.sale_price ?? item.price))}</td>
               <td>
                 <Button 
                   onClick={() => onRemove(item.id)}
@@ -109,7 +89,7 @@ function Cart({ cart, onQtyChange, onRemove, onCompleteSale, onPreviewReceipt, p
       </div>
       <div style={{ marginTop: 16 }}>
         <Button 
-          onClick={handleCompleteSale}
+          onClick={onRequestCompleteSale}
           disabled={cart.length === 0}
           variant="primary"
           style={{ 

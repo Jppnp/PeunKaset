@@ -16,26 +16,15 @@ Acceptance Criteria (must have these features):
 [x] I must be able to enter a Product Name, a Description (to tell similar items apart), a Selling Price, and the initial quantity in stock.
 [x] I need to see a list of all my products with their current stock levels.
 
-Story 2: Creating Barcode Labels
+Story 2: Selling an Item (The Fast Way)
 [x] As a Store Seller,
-[x] I want to select any product from my inventory and print a barcode label for it,
-[x] so that I can label my items for fast checkout.
+[x] I want to quickly find and add items to the cart by searching for their name or description.
 
 Acceptance Criteria:
 
-[x] The printed label must show the product's name, price, and a scannable barcode representing its unique SKU.
-[x] The printing should work with a dedicated label printer.
-
-Story 3: Selling an Item (The Fast Way)
-[x] As a Store Seller,
-[x] I want to use a USB barcode scanner to scan an item,
-[x] so that it is immediately added to the customer's cart.
-
-Acceptance Criteria:
-
-[x] The main sales screen should be ready to accept a scan at any time.
-[x] Scanning a barcode finds the product and adds it to the cart with the correct price instantly.
-[x] Scanning the same item multiple times should increase its quantity in the cart.
+[x] The main sales screen should allow searching by product name or description.
+[x] Selecting a product from the search results adds it to the cart with the correct price instantly.
+[x] Adding the same item multiple times should increase its quantity in the cart.
 
 Story 4: Selling an Item (The Manual Way)
 [x] As a Store Seller,

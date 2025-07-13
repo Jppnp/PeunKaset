@@ -1,21 +1,15 @@
 import { ipcMain } from 'electron';
 import db from '../../../db.js';
 
-// Generate a unique SKU (simple example: timestamp-based)
-function generateSKU() {
-  return 'SKU-' + Date.now();
-}
-
 export function setupProductHandlers() {
   ipcMain.handle('addProduct', async (event, product) => {
     return new Promise((resolve, reject) => {
-      const sku = generateSKU();
       db.run(
-        'INSERT INTO products (sku, name, description, price, stockOnHand) VALUES (?, ?, ?, ?, ?)',
-        [sku, product.name, product.description, product.price, product.stock],
+        'INSERT INTO products (name, description, cost_price, sale_price, stockOnHand) VALUES (?, ?, ?, ?, ?)',
+        [product.name, product.description, product.cost_price, product.sale_price, product.stock],
         function (err) {
           if (err) return reject(err);
-          resolve({ id: this.lastID, sku, ...product });
+          resolve({ id: this.lastID, ...product });
         }
       );
     });
@@ -24,8 +18,8 @@ export function setupProductHandlers() {
   ipcMain.handle('editProduct', async (event, id, product) => {
     return new Promise((resolve, reject) => {
       db.run(
-        'UPDATE products SET name = ?, description = ?, price = ?, stockOnHand = ? WHERE id = ?',
-        [product.name, product.description, product.price, product.stock, id],
+        'UPDATE products SET name = ?, description = ?, cost_price = ?, sale_price = ?, stockOnHand = ? WHERE id = ?',
+        [product.name, product.description, product.cost_price, product.sale_price, product.stock, id],
         function (err) {
           if (err) return reject(err);
           resolve({ id, ...product });
@@ -63,13 +57,8 @@ export function setupProductHandlers() {
       }
       const q = `%${query.trim()}%`;
       db.all(
-        `SELECT *,
-          CASE WHEN sku = ? THEN 1 ELSE 0 END AS isExactSku,
-          CASE WHEN LOWER(name) = LOWER(?) THEN 1 ELSE 0 END AS isExactName
-        FROM products
-        WHERE sku = ? OR LOWER(name) LIKE LOWER(?) OR LOWER(description) LIKE LOWER(?)
-        ORDER BY isExactSku DESC, isExactName DESC, name ASC`,
-        [query, query, query, q, q],
+        `SELECT * FROM products WHERE LOWER(name) LIKE LOWER(?) OR LOWER(description) LIKE LOWER(?) ORDER BY name ASC`,
+        [q, q],
         (err, rows) => {
           if (err) return reject(err);
           resolve(rows);

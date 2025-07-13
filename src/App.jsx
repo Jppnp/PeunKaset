@@ -25,9 +25,11 @@ function App() {
   };
 
   return (
-    <div>
+    <div className="app-root-layout">
       <Navigation currentScreen={currentScreen} onScreenChange={setCurrentScreen} />
-      {renderScreen()}
+      <div className="app-content">
+        {renderScreen()}
+      </div>
     </div>
   );
 }

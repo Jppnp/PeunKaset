@@ -2,7 +2,7 @@ import React from 'react';
 import Button from '../common/Button';
 import { formatCurrency } from '../common/Button';
 
-function SalesList({ sales, selectedSale, onSelectSale, onPreviewReceipt }) {
+function SalesList({ sales, selectedSale, onSelectSale, onPreviewReceipt, onDeleteSale }) {
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleString('th-TH');
   };
@@ -17,7 +17,9 @@ function SalesList({ sales, selectedSale, onSelectSale, onPreviewReceipt }) {
             <th>วันที่</th>
             <th>จำนวนสินค้า</th>
             <th>ยอดรวม</th>
-            <th>การกระทำ</th>
+            <th>กำไร</th>
+            <th>หมายเหตุ</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -27,6 +29,8 @@ function SalesList({ sales, selectedSale, onSelectSale, onPreviewReceipt }) {
               <td>{formatDate(sale.date)}</td>
               <td>{sale.item_count}</td>
               <td>{formatCurrency(sale.total_amount || 0)}</td>
+              <td>{formatCurrency(sale.profit || 0)}</td>
+              <td>{sale.remark || ''}</td>
               <td>
                 <Button 
                   onClick={() => onSelectSale(sale.id)}
@@ -46,6 +50,14 @@ function SalesList({ sales, selectedSale, onSelectSale, onPreviewReceipt }) {
                   }}
                 >
                   ดูใบเสร็จ
+                </Button>
+                <br />
+                <Button
+                  onClick={() => onDeleteSale(sale.id)}
+                  variant="danger"
+                  style={{ fontSize: 11, padding: '4px 8px', marginTop: 4 }}
+                >
+                  ลบรายการนี้
                 </Button>
               </td>
             </tr>

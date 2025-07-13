@@ -15,15 +15,16 @@ const db = new sqlite3.Database(dbPath);
 const initSQL = `
 CREATE TABLE IF NOT EXISTS products (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
-  sku TEXT UNIQUE NOT NULL,
   name TEXT NOT NULL,
   description TEXT,
-  price REAL NOT NULL,
+  cost_price REAL NOT NULL DEFAULT 0,
+  sale_price REAL NOT NULL DEFAULT 0,
   stockOnHand INTEGER NOT NULL
 );
 CREATE TABLE IF NOT EXISTS sales (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
-  date TEXT NOT NULL
+  date TEXT NOT NULL,
+  remark TEXT
 );
 CREATE TABLE IF NOT EXISTS sale_items (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -31,6 +32,7 @@ CREATE TABLE IF NOT EXISTS sale_items (
   product_id INTEGER NOT NULL,
   quantity INTEGER NOT NULL,
   price REAL NOT NULL,
+  cost_price REAL NOT NULL DEFAULT 0,
   FOREIGN KEY (sale_id) REFERENCES sales(id),
   FOREIGN KEY (product_id) REFERENCES products(id)
 );
@@ -40,7 +42,16 @@ db.exec(initSQL, (err) => {
   if (err) {
     console.error('Failed to initialize database:', err);
   } else {
+    // Remove all migration logic related to price field
     console.log('Database initialized');
+    // Migration: add remark to sales if missing
+    db.all("PRAGMA table_info(sales);", (err, columns) => {
+      if (err) return;
+      const colNames = columns.map(c => c.name);
+      if (!colNames.includes('remark')) {
+        db.run("ALTER TABLE sales ADD COLUMN remark TEXT;");
+      }
+    });
   }
 });
 

@@ -64,11 +64,17 @@ function generateReceiptHTML({ saleData, cartItems, preview = false }) {
       font-size: 12px;
       word-break: break-all;
     }
+    .item-desc {
+      font-size: 10px;
+      color: #555;
+      margin-bottom: 1px;
+    }
     .item-details {
       color: #000;
       font-size: 11px;
       display: flex;
       justify-content: space-between;
+      margin-right: 5px;
     }
     .total {
       border-top: 1px solid #333;
@@ -126,6 +132,7 @@ function generateReceiptHTML({ saleData, cartItems, preview = false }) {
   const itemsHTML = cartItems.map(item => `
     <div class="item">
       <div class="item-name">${item.name}</div>
+      ${item.description ? `<div class="item-desc" style="font-size:10px;color:#000;margin-bottom:1px;">${item.description}</div>` : ''}
       <div class="item-details">
         <span>${item.qty} x ${formatCurrency(item.price)}</span>
         <span>= ${formatCurrency(item.qty * item.price)} บาท</span>
@@ -144,9 +151,9 @@ function generateReceiptHTML({ saleData, cartItems, preview = false }) {
         ${preview ? '<button class="print-button" onclick="window.print()">Print</button>' : ''}
         <div class="receipt">
           <div class="header">
-            <h2>เพื่อนเกษตร</h2>
+            <h2>ก.เพื่อนเกษตร</h2>
+            <h2>085-733-1118</h2>
             <div>ใบเสร็จรับเงิน</div>
-            <div style="font-size: 11px; color: #000;">Receipt</div>
             <div style="margin-top: 3px; font-weight: bold;">รายการที่ #${saleData.saleId}</div>
             <div style="font-size: 11px; color: #000;">${new Date(saleData.saleDate).toLocaleString('th-TH')}</div>
           </div>
@@ -154,6 +161,7 @@ function generateReceiptHTML({ saleData, cartItems, preview = false }) {
           <div class="total">
             ยอดรวม: ${formatCurrency(saleData.totalAmount)} บาท
           </div>
+          ${saleData.remark ? `<div style="margin: 8px 0; color: #000;">หมายเหตุ: ${saleData.remark}</div>` : ''}
           <div class="footer">
             ขอบคุณที่ใช้บริการ<br>
           </div>
@@ -163,45 +171,7 @@ function generateReceiptHTML({ saleData, cartItems, preview = false }) {
   `;
 }
 
-// Generate label HTML for product label printing
-function generateLabelHTML(product) {
-  return `
-    <html>
-      <body style="font-family:sans-serif;text-align:center;padding:0;margin:0;">
-        <div style="font-size:18px;font-weight:bold;">${product.name}</div>
-        <div style="font-size:16px;">Price: ${formatCurrency(product.price)}</div>
-        <svg id="barcode"></svg>
-        <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.12.0/dist/JsBarcode.all.min.js"></script>
-        <script>
-          JsBarcode(document.getElementById('barcode'), '${product.sku}', {format:'CODE128', width:2, height:40, displayValue:false});
-        </script>
-      </body>
-    </html>
-  `;
-}
-
 export function setupPrintHandlers() {
-  // Print product label
-  ipcMain.handle('printLabel', async (event, product) => {
-    const { BrowserWindow } = await import('electron');
-    const labelWin = new BrowserWindow({
-      width: 300,
-      height: 180,
-      show: false,
-      webPreferences: {
-        nodeIntegration: false,
-        contextIsolation: true,
-      },
-    });
-    const labelHTML = generateLabelHTML(product);
-    await labelWin.loadURL('data:text/html;charset=utf-8,' + encodeURIComponent(labelHTML));
-    labelWin.webContents.on('did-finish-load', () => {
-      labelWin.webContents.print({ silent: false }, () => {
-        labelWin.close();
-      });
-    });
-  });
-
   // Print receipt (silent)
   ipcMain.handle('printReceipt', async (event, saleData, cartItems) => {
     const { BrowserWindow } = await import('electron');
@@ -215,17 +185,14 @@ export function setupPrintHandlers() {
       },
     });
     const receiptHTML = generateReceiptHTML({ saleData, cartItems, preview: false });
-    receiptWin.webContents.once('did-finish-load', () => {
-      receiptWin.webContents.print({ silent: true }, (success, failureReason) => {
+    receiptWin.webContents.addListener('did-finish-load', async () => {
+      receiptWin.webContents.print({ silent: false, deviceName: 'POS-80'}, (success, failureReason) => {
         if (success) {
           receiptWin.close();
         } else {
           console.error('Print job failed:', failureReason);
         }
       });
-    });
-    receiptWin.webContents.on('did-fail-load', (event, errorCode, errorDescription, validatedURL) => {
-      console.error('did-fail-load:', errorCode, errorDescription, validatedURL);
     });
     await receiptWin.loadURL('data:text/html;charset=utf-8,' + encodeURIComponent(receiptHTML));
   });
