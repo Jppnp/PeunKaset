@@ -1,6 +1,6 @@
 import React from 'react';
 import Button from '../common/Button';
-import { formatCurrency } from '../common/Button';
+import { formatCurrency } from '../../utils/formatters';
 
 function ProductTable({ products, onEdit, onDelete }) {
   return (

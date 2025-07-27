@@ -1,6 +1,6 @@
 import React from 'react';
 import Button from '../common/Button';
-import { formatCurrency } from '../common/Button';
+import { formatCurrency } from '../../utils/formatters';
 
 function SalesSummary({ sales, onRefresh, loading }) {
   const totalRevenue = sales.reduce((sum, sale) => sum + (sale.total_amount || 0), 0);

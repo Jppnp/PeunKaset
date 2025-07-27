@@ -4,6 +4,7 @@ import POS from './components/POS/POS';
 import ProductManagement from './components/ProductManagement/ProductManagement';
 import SalesHistory from './components/SalesHistory/SalesHistory';
 import Settings from './components/Settings/Settings';
+import UpdateController from './components/Update/UpdateController';
 import './App.css';
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
       <div className="app-content">
         {renderScreen()}
       </div>
+      <UpdateController />
     </div>
   );
 }

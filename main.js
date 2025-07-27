@@ -1,14 +1,29 @@
+import { webcrypto } from 'crypto';
+import dotenv from 'dotenv';
+
+if (!global.crypto) {
+  global.crypto = webcrypto;
+}
+
 import { app, BrowserWindow } from 'electron';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import process from 'process';
 import './db.js';
-
+  
 // Import handler modules
 import { setupProductHandlers } from './src/main/handlers/productHandlers.js';
 import { setupSalesHandlers } from './src/main/handlers/salesHandlers.js';
 import { setupPrintHandlers } from './src/main/handlers/printHandlers.js';
 import { setupBackupHandlers } from './src/main/handlers/backupHandlers.js';
+import { setupUpdateHandlers } from './src/main/handlers/updateHandlers.js';
+
+dotenv.config()
+console.log('Hi')
+console.log(process.env.GITHUB_OWNER)
+console.log('l')
+console.log(process.env.NODE_ENV)
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -38,6 +53,7 @@ function setupHandlers() {
   setupSalesHandlers();
   setupPrintHandlers();
   setupBackupHandlers();
+  setupUpdateHandlers();
 }
 
 app.whenReady().then(() => {
@@ -49,6 +65,9 @@ app.whenReady().then(() => {
   });
 });
 
+app.on('window-all-closed', function () {
+  if (process.platform !== 'darwin') app.quit();
+}); 
 app.on('window-all-closed', function () {
   if (process.platform !== 'darwin') app.quit();
 }); 

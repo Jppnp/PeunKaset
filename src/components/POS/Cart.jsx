@@ -1,13 +1,13 @@
 import React from 'react';
 import Button from '../common/Button';
-import { formatCurrency } from '../common/Button';
+import { formatCurrency } from '../../utils/formatters';
 
 function Cart({ cart, onQtyChange, onRemove, onRequestCompleteSale, onPreviewReceipt, printReceipt, setPrintReceipt }) {
   const cartTotal = cart.reduce((sum, item) => sum + item.qty * (item.sale_price ?? item.price), 0);
 
   return (
     <div>
-      <h3 style={{ marginTop: 32 }}>ตะกร้าสินค้า</h3>
+      <h3 style={{ marginTop: 32 }}>ตะกร้าสินค้า112345</h3>
       <table border="1" cellPadding="8" style={{ width: '100%', borderCollapse: 'collapse', marginTop: 8 }}>
         <thead>
           <tr>

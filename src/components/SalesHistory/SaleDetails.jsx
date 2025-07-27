@@ -1,5 +1,5 @@
 import React from 'react';
-import { formatCurrency } from '../common/Button';
+import { formatCurrency } from '../../utils/formatters';
 
 function SaleDetails({ saleDetails, saleId, onDeleteSaleItem }) {
   if (!saleId) {

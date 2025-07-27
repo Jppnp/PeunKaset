@@ -1,19 +1,5 @@
 import React from 'react';
 
-// Utility function to format numbers with commas
-export function formatNumber(num) {
-  if (num === null || num === undefined) return '0';
-  return Number(num).toLocaleString('en-US');
-}
-
-// Utility function to format currency with commas
-export function formatCurrency(amount) {
-  if (amount === null || amount === undefined) return '0.00';
-  return Number(amount).toLocaleString('en-US', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-  });
-}
 
 function Button({ 
   children, 

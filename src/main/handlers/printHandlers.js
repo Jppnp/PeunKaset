@@ -1,13 +1,6 @@
 import { ipcMain } from 'electron';
+import { formatCurrency } from '../../utils/formatters.js';
 
-// Utility function to format currency with commas
-function formatCurrency(amount) {
-  if (amount === null || amount === undefined) return '0.00';
-  return Number(amount).toLocaleString('en-US', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-  });
-}
 
 // Generate receipt HTML (for both print and preview)
 function generateReceiptHTML({ saleData, cartItems, preview = false }) {
@@ -186,7 +179,7 @@ export function setupPrintHandlers() {
     });
     const receiptHTML = generateReceiptHTML({ saleData, cartItems, preview: false });
     receiptWin.webContents.addListener('did-finish-load', async () => {
-      receiptWin.webContents.print({ silent: false, deviceName: 'POS-80'}, (success, failureReason) => {
+      receiptWin.webContents.print({ silent: false }, (success, failureReason) => {
         if (success) {
           receiptWin.close();
         } else {

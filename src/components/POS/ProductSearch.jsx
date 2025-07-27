@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { formatCurrency } from '../common/Button';
+import { formatCurrency } from '../../utils/formatters';
 
 function ProductSearch({ onAddToCart }) {
   const [query, setQuery] = useState('');

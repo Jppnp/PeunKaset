@@ -9,7 +9,7 @@ const __dirname = path.dirname(__filename);
 const dbPath = path.join(__dirname, '../../../store.db');
 
 export function setupBackupHandlers() {
-  ipcMain.handle('backupData', async (event) => {
+  ipcMain.handle('backupData', async () => {
     const { dialog } = await import('electron');
     const fs = await import('fs');
     
@@ -42,7 +42,7 @@ export function setupBackupHandlers() {
     }
   });
 
-  ipcMain.handle('restoreData', async (event) => {
+  ipcMain.handle('restoreData', async () => {
     const { dialog } = await import('electron');
     const fs = await import('fs');
     

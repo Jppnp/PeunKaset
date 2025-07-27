@@ -1,0 +1,43 @@
+name: Release Puenkaset POS
+
+on:
+  push:
+    tags:
+      - 'v*.*.*' # Trigger on tags like v1.0.0, v1.0.1, etc.
+  workflow_dispatch: # Allow manual triggering
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20' # Use a recent LTS Node.js version
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build and package Electron app
+      run: npm run dist
+
+    - name: Create GitHub Release
+      id: create_release
+      uses: softprops/action-gh-release@v2
+      with:
+        files: |
+          dist/*.AppImage
+          dist/*.deb
+          dist/*.dmg
+          dist/*.exe
+          dist/*.zip
+          dist/*.yml
+          dist/*.blockmap
+        prerelease: ${{ contains(github.ref, '-beta') || contains(github.ref, '-alpha') || contains(github.ref, '-rc') }}
+        generate_release_notes: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
