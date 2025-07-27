@@ -19,10 +19,6 @@ import { setupBackupHandlers } from './src/main/handlers/backupHandlers.js';
 import { setupUpdateHandlers } from './src/main/handlers/updateHandlers.js';
 
 dotenv.config()
-console.log('Hi')
-console.log(process.env.GITHUB_OWNER)
-console.log('l')
-console.log(process.env.NODE_ENV)
 
 
 const __filename = fileURLToPath(import.meta.url);
