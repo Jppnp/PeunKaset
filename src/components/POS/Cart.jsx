@@ -7,7 +7,7 @@ function Cart({ cart, onQtyChange, onRemove, onRequestCompleteSale, onPreviewRec
 
   return (
     <div>
-      <h3 style={{ marginTop: 32 }}>ตะกร้าสินค้า112345</h3>
+      <h3 style={{ marginTop: 32 }}>ตะกร้าสินค้า</h3>
       <table border="1" cellPadding="8" style={{ width: '100%', borderCollapse: 'collapse', marginTop: 8 }}>
         <thead>
           <tr>
