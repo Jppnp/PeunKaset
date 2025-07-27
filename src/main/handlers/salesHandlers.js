@@ -2,6 +2,7 @@ import { ipcMain } from 'electron';
 import db from '../../../db.js';
 import fs from 'fs';
 import { dialog } from 'electron';
+import { BrowserWindow } from 'electron';
 
 export function setupSalesHandlers() {
   ipcMain.handle('completeSale', async (event, cartItems, remark = '') => {
@@ -197,5 +198,13 @@ export function setupSalesHandlers() {
         });
       });
     });
+  });
+
+  ipcMain.on('focus-fix', () => {
+    const win = BrowserWindow.getFocusedWindow();
+    if (win) {
+      win.blur();
+      win.focus();
+    }
   });
 } 

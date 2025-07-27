@@ -17,4 +17,5 @@ contextBridge.exposeInMainWorld('api', {
   deleteSale: (saleId) => ipcRenderer.invoke('deleteSale', saleId),
   deleteSaleItem: (saleItemId) => ipcRenderer.invoke('deleteSaleItem', saleItemId),
   exportSalesCSV: (params) => ipcRenderer.invoke('exportSalesCSV', params),
+  focusFix: () => ipcRenderer.send('focus-fix'),
 }); 

@@ -54,6 +54,8 @@ function ProductManagement() {
     setEditingIndex(products.findIndex(p => p.id === id));
   };
 
+  const handleFormChange = (newForm) => setForm(newForm);
+
   // Use confirm modal for delete
   const handleDelete = (id) => {
     setConfirm({
@@ -91,8 +93,9 @@ function ProductManagement() {
       <h2>จัดการสินค้า</h2>
       <ProductForm
         form={form}
-        setForm={setForm}
+        onFormChange={handleFormChange}
         onSubmit={handleSubmit}
+        isEditing={editingIndex !== null}
         editingIndex={editingIndex}
         setEditingIndex={setEditingIndex}
         setEditingId={setEditingId}

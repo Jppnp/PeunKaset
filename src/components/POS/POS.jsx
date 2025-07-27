@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import ProductSearch from './ProductSearch';
 import Cart from './Cart';
+import Toast from '../common/Toast';
 
 function POS() {
   const [cart, setCart] = useState([]);
@@ -35,6 +36,12 @@ function POS() {
     await window.api.previewReceipt(saleData, cartItems);
   };
 
+  const focusFix = () => {
+    if (window.api && window.api.focusFix) {
+      window.api.focusFix();
+    }
+  }
+
   const handleRequestCompleteSale = async () => {
     if (cart.length === 0) {
       alert('ไม่มีสินค้าในตะกร้า');
@@ -59,6 +66,7 @@ function POS() {
         setRemark('');
         setNotification(`ขายสินค้าสำเร็จ! Sale #${saleData.saleId} ยอดรวม: ${saleData.totalAmount.toLocaleString()} บาท`);
         setTimeout(() => setNotification(''), 3000);
+        focusFix()
       } catch (error) {
         alert('เกิดข้อผิดพลาดในการขายสินค้า: ' + error.message);
       }
@@ -67,11 +75,7 @@ function POS() {
 
   return (
     <div style={{ padding: 24 }}>
-      {notification && (
-        <div style={{ position: 'fixed', top: 20, right: 20, background: '#333', color: '#fff', padding: 16, borderRadius: 8, zIndex: 1000 }}>
-          {notification}
-        </div>
-      )}
+      <Toast message={notification} onClose={() => setNotification('')} />
       <h2>หน้าขายสินค้า (POS)</h2>
       <ProductSearch onAddToCart={handleAddToCart} />
       <div style={{ margin: '16px 0' }}>
