@@ -41,7 +41,7 @@ export default defineConfig([
     files: ['scripts/**/*.js'],
     languageOptions: {
       ecmaVersion: 2020,
-      sourceType: 'commonjs',
+      sourceType: 'module',
       globals: globals.node,
     },
     rules: {

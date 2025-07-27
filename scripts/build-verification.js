@@ -1,6 +1,7 @@
-const fs = require('fs');
-const path = require('path');
-const crypto = require('crypto');
+import fs from 'fs'
+import path from 'path'
+import crypto from 'crypto'
+import process from 'process';
 
 function calculateChecksum(filePath) {
     return new Promise((resolve, reject) => {

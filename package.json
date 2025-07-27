@@ -1,7 +1,7 @@
 {
   "name": "puenkaset",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "author": "Jab Panupong",
   "scripts": {
@@ -9,8 +9,8 @@
     "electron": "cross-env NODE_ENV=development electron .",
     "build": "vite build",
     "postbuild": "electron-builder",
-    "pack": "electron-builder --dir",
-    "dist": "npm run build && electron-builder",
+    "pack": "electron-rebuild && electron-builder --dir",
+    "dist": "electron-rebuild && npm run build && electron-builder",
     "lint": "eslint .",
     "preview": "vite preview",
     "rebuild": "electron-rebuild"
@@ -38,19 +38,21 @@
       "src/main/handlers/**/*",
       "src/main/services/**/*",
       "src/main/migrations/**/*",
-      "src/main/config/**/*"
+      "src/main/config/**/*",
+      "src/utils/**/*"
     ],
     "directories": {
       "buildResources": "public"
     },
     "asarUnpack": [
       "store.db",
-      "src/main/migrations/**/*"
+      "src/main/migrations/**/*",
+      "node_modules/sqlite3/**/*"
     ],
     "publish": {
       "provider": "github",
-      "owner": "your-github-username",
-      "repo": "puenkaset",
+      "owner": "Jppnp",
+      "repo": "PeunKaset",
       "private": true
     }
   },

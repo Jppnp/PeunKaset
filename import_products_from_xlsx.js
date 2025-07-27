@@ -3,6 +3,7 @@ import sqlite3 from 'sqlite3';
 import path from 'path';
 
 // Open the database
+// eslint-disable-next-line no-undef
 const db = new sqlite3.Database(path.join(process.cwd(), 'store.db'));
 
 // Read the Excel file
