@@ -68,7 +68,7 @@ export function setupSalesHandlers() {
     });
   });
 
-  ipcMain.handle('getSalesHistory', async (event, { filterType, filterValue, limit = 50 }) => {
+  ipcMain.handle('getSalesHistory', async (event, { filterType, filterValue, limit } = {}) => {
     // filterType: 'day' | 'month' | undefined
     // filterValue: 'YYYY-MM-DD' or 'YYYY-MM' or undefined
     let where = '';
@@ -80,7 +80,13 @@ export function setupSalesHandlers() {
       where = "WHERE strftime('%Y-%m', s.date) = ?";
       params.push(filterValue);
     }
-    params.push(limit);
+    
+    let limitClause = '';
+    if (limit) {
+      limitClause = 'LIMIT ?';
+      params.push(limit);
+    }
+    
     return new Promise((resolve, reject) => {
       db.all(`
         SELECT 
@@ -95,7 +101,7 @@ export function setupSalesHandlers() {
         ${where}
         GROUP BY s.id, s.date
         ORDER BY s.date DESC
-        LIMIT ?
+        ${limitClause}
       `, params, (err, rows) => {
         if (err) return reject(err);
         resolve(rows);

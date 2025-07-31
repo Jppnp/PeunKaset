@@ -24,4 +24,6 @@ store.db
 *.sln
 *.sw?
 
+.kiro
+
 package-lock.json

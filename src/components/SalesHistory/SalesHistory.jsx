@@ -4,6 +4,7 @@ import SalesList from './SalesList';
 import SaleDetails from './SaleDetails';
 import Toast from '../common/Toast';
 import ConfirmModal from '../common/ConfirmModal';
+import { getTodayDate } from '../../utils/formatters';
 
 const PAGE_SIZE = 10;
 
@@ -12,8 +13,8 @@ function SalesHistory() {
   const [selectedSale, setSelectedSale] = useState(null);
   const [saleDetails, setSaleDetails] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [filterType, setFilterType] = useState('all'); // 'all' | 'day' | 'month'
-  const [filterValue, setFilterValue] = useState('');
+  const [filterType, setFilterType] = useState('day'); // 'all' | 'day' | 'month'
+  const [filterValue, setFilterValue] = useState(getTodayDate());
   const [exporting, setExporting] = useState(false);
   const [page, setPage] = useState(1);
   const [notification, setNotification] = useState('');
@@ -27,9 +28,9 @@ function SalesHistory() {
   const loadSalesHistory = async () => {
     setLoading(true);
     try {
-      let params = { limit: 1000 };
-      if (filterType === 'day') params = { filterType: 'day', filterValue, limit: 1000 };
-      else if (filterType === 'month') params = { filterType: 'month', filterValue, limit: 1000 };
+      let params = {}; // Remove limit to show all orders
+      if (filterType === 'day') params = { filterType: 'day', filterValue };
+      else if (filterType === 'month') params = { filterType: 'month', filterValue };
       const salesData = await window.api.getSalesHistory(params);
       setSales(salesData);
       setPage(1);
